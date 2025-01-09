@@ -6,6 +6,8 @@
 
 A Python application that fetches real-time weather data and 5-day forecasts for multiple cities using the OpenWeather API. The application visualizes current weather conditions and forecast data while automatically storing the information in AWS S3 buckets for historical tracking and analysis.
 
+![Weather Icon](image/architecture.png)
+
 ## Features
 
 - **Real-time Weather Data**: Fetches current weather conditions including temperature, humidity, and weather descriptions
