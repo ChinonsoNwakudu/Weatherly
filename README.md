@@ -38,7 +38,7 @@ Weatherly-dashboard/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/weather-dashboard.git
+git clone https://github.com/ChinonsoNwakudu/Weatherly.git
 cd weatherly-dashboard
 ```
 
