@@ -1,7 +1,6 @@
 # Weatherly
 
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
 ![OpenWeather](https://img.shields.io/badge/OpenWeather-API-orange)
 ![AWS](https://img.shields.io/badge/AWS-S3-yellow)
 
@@ -78,7 +77,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Copy `.env.example` to `.env` and update with your credentials:
+4. Create `.env` and update with your credentials:
 ```
 OPENWEATHER_API_KEY=your_api_key_here
 AWS_BUCKET_NAME=your_bucket_name
@@ -169,7 +168,7 @@ bucket_name/
 ### Development Setup
 1. Install development dependencies:
 ```bash
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 ```
 
 ## Performance Considerations
@@ -181,12 +180,6 @@ pip install -r requirements-dev.txt
 
 
 
-## Acknowledgments
-
-- OpenWeather API for weather data
-- AWS for cloud storage capabilities
-
-
 ## Future Enhancements
 
 - Web interface for data visualization
@@ -196,6 +189,3 @@ pip install -r requirements-dev.txt
 - Custom data refresh intervals
 - Additional weather metrics
 
-## Support
-
-For support, please open an issue in the GitHub repository or contact the maintainers.
