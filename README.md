@@ -9,7 +9,7 @@ A Python application that fetches real-time weather data and 5-day forecasts for
 ## Features
 
 - **Real-time Weather Data**: Fetches current weather conditions including temperature, humidity, and weather descriptions
-- **5-Day Forecast**: This is an added feature I Implemented that Provides detailed 5-day weather forecasts with daily high/low temperatures, humidity, and wind conditions
+- **5-Day Forecast**: This is a feature I added that Provides detailed 5-day weather forecasts with daily high/low temperatures, humidity, and wind conditions
 - **Multiple Cities**: Supports monitoring multiple cities simultaneously with option to add custom locations of your choice
 - **AWS S3 Integration**: Automatically stores weather data in JSON format for historical tracking
 - **Interactive CLI**: User-friendly command-line interface for adding custom cities
