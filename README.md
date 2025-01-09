@@ -1,57 +1,89 @@
 # Weatherly
 
+![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![OpenWeather](https://img.shields.io/badge/OpenWeather-API-orange)
+![AWS](https://img.shields.io/badge/AWS-S3-yellow)
+
 A Python application that fetches real-time weather data and 5-day forecasts for multiple cities using the OpenWeather API. The application visualizes current weather conditions and forecast data while automatically storing the information in AWS S3 buckets for historical tracking and analysis.
 
 ## Features
 
 - **Real-time Weather Data**: Fetches current weather conditions including temperature, humidity, and weather descriptions
-- **5-Day Forecast**: Provides detailed 5-day weather forecasts with daily high/low temperatures, humidity, and wind conditions
-- **Multiple Cities**: Supports monitoring multiple cities simultaneously with option to add custom locations
+- **5-Day Forecast**: This is an added feature I Implemented that Provides detailed 5-day weather forecasts with daily high/low temperatures, humidity, and wind conditions
+- **Multiple Cities**: Supports monitoring multiple cities simultaneously with option to add custom locations of your choice
 - **AWS S3 Integration**: Automatically stores weather data in JSON format for historical tracking
 - **Interactive CLI**: User-friendly command-line interface for adding custom cities
 - **Data Persistence**: Maintains historical weather data in organized S3 bucket structure
 
-## Project structure
+## Project Structure
 ```
-
 Weatherly-dashboard/
 ├── Src/
-│   └── __init__.py
-    └── weatherly_dashboard.py
-└── data    
-└── test
-└── forecast-data/
-    └── city-timestamp.json
-└── README.md
-└── requirements.txt
-
+│   ├── __init__.py
+│   └── weatherly_dashboard.py
+├── forecast-data/
+│   └── city-timestamp.json
+├── README.md
+├── requirements.txt
+├── .env
+└── support
 ```
-## Requirements
+
+## Prerequisites
 
 - Python 3.6+
-- Boto3: AWS SDK for Python to interact with Amazon S3
 - OpenWeather API key (free tier)
-- AWS credentials with S3 access
-- Required Python packages (see `requirements.txt`)
+- AWS account with S3 access
+- Operating System: Windows, macOS, or Linux
+
+## Setup & Configuration
+
+### AWS Configuration
+1. Create an AWS IAM user with S3 access:
+   - Go to AWS IAM Console
+   - Create new user with programmatic access
+   - Attach `AmazonS3FullAccess` policy
+
+2. Configure AWS credentials locally:
+```bash
+aws configure
+# OR set environment variables
+export AWS_ACCESS_KEY_ID="your_access_key"
+export AWS_SECRET_ACCESS_KEY="your_secret_key"
+export AWS_DEFAULT_REGION="your_region"
+```
+
+### OpenWeather API Setup
+1. Sign up at [OpenWeather](https://openweathermap.org/api)
+2. Generate an API key
+3. Note: Free tier allows 60 calls/minute
 
 ## Installation
 
 1. Clone the repository:
 ```bash
 git clone https://github.com/ChinonsoNwakudu/Weatherly.git
-cd weatherly-dashboard
+
 ```
 
-2. Install required packages:
+2. Create and activate virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  
+```
+
+3. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file in the project root with your credentials:
+4. Copy `.env.example` to `.env` and update with your credentials:
 ```
 OPENWEATHER_API_KEY=your_api_key_here
 AWS_BUCKET_NAME=your_bucket_name
-
+REFRESH_INTERVAL=30
+DEFAULT_CITIES=Lagos,New York,Doha
 ```
 
 ## Usage
@@ -61,25 +93,50 @@ Run the application:
 python weatherly_dashboard.py
 ```
 
-The application will:
-1. Create an S3 bucket if it doesn't exist
-2. Display current weather for default cities (Lagos, New York, Doha)
-3. Prompt for additional cities
-4. Show current weather conditions including:
-   - Temperature (°F)
-   - Feels like temperature
-   - Humidity percentage
-   - Weather conditions
-5. Display 5-day forecast with:
-   - Daily high/low temperatures
-   - Weather conditions
-   - Humidity levels
-   - Wind speeds
-6. Save all data to S3 in JSON format
+### Configuration Options
+
+#### Environment Variables
+- `OPENWEATHER_API_KEY`: Your OpenWeather API key
+- `AWS_BUCKET_NAME`: S3 bucket name for data storage
+- `REFRESH_INTERVAL`: Data refresh interval in minutes (default: 30)
+- `DEFAULT_CITIES`: Comma-separated list of default cities to monitor
+
+## Data Schema
+
+### Weather Data JSON Format
+```json
+{
+    "city": "New York",
+    "timestamp": "2024-01-09T12:00:00Z",
+    "temperature": 72.5,
+    "feels_like": 75.2,
+    "humidity": 65,
+    "conditions": "partly cloudy",
+    "wind_speed": 5.7
+}
+```
+
+### Forecast Data JSON Format
+```json
+{
+    "city": "New York",
+    "generated_at": "2024-01-09T12:00:00Z",
+    "forecast": [
+        {
+            "date": "2024-01-10",
+            "high": 75.2,
+            "low": 62.8,
+            "humidity": 70,
+            "wind_speed": 6.2,
+            "conditions": "sunny"
+        }
+    ]
+}
+```
 
 ## Data Storage
 
-Weather data is stored in the following S3 structure:
+Weather data is stored in AWS S3 with the following structure:
 ```
 bucket_name/
 ├── weather-data/
@@ -88,38 +145,47 @@ bucket_name/
     └── city-timestamp.json
 ```
 
-## AWS S3 Requirements
+## Troubleshooting
 
-The application requires:
-- AWS credentials with S3 full access
-- Permissions to create buckets (if bucket doesn't exist)
-- Permissions to put objects in buckets
+### Common Issues
 
-## Error Handling
+1. API Connection Errors
+   - Verify API key validity in `.env`
+   - Check internet connection
+   - Confirm you haven't exceeded rate limits (60 calls/minute)
 
-The application includes comprehensive error handling for:
-- API connection issues
-- Invalid city names
-- AWS credential/permission issues
-- Data formatting problems
+2. AWS S3 Access Issues
+   - Verify AWS credentials are configured correctly
+   - Check bucket permissions and policies
+   - Ensure IAM user has proper S3 access
 
-## Contributing
+3. Data Processing Errors
+   - Validate city names are spelled correctly
+   - Check JSON data format integrity
+   - Verify storage paths exist
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Local Development
 
-## License
+### Development Setup
+1. Install development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Performance Considerations
+
+- API rate limiting: Default refresh rate is 30 minutes
+- Data storage: JSON files organized by date
+- Memory usage: Batch processing for multiple cities
+- Network requests: Implemented with timeout and retry logic
+
+
 
 ## Acknowledgments
 
 - OpenWeather API for weather data
 - AWS for cloud storage capabilities
-- Contributors who help improve the project
+
 
 ## Future Enhancements
 
@@ -129,3 +195,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Weather alerts integration
 - Custom data refresh intervals
 - Additional weather metrics
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
